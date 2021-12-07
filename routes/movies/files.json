@@ -1,0 +1,190 @@
+{
+    "movies": [
+        {
+            "title": "Iron Man",
+            "phase": 1,
+            "release": "2008-05-01",
+            "imdb": 7.9
+        },
+        {
+            "title": "The Incredible Hulk",
+            "phase": 1,
+            "release": "2008-06-13",
+            "imdb": 6.6
+        },
+        {
+            "title": "Iron Man 2",
+            "phase": 1,
+            "release": "2010-04-29",
+            "imdb": 7.0
+        },
+        {
+            "title": "Thor",
+            "phase": 1,
+            "release": "2011-04-28",
+            "imdb": 7.0
+        },
+        {
+            "title": "Captain America: The First Avenger ",
+            "phase": 1,
+            "release": "2011-07-19",
+            "imdb": 6.9
+        },
+        {
+            "title": "The Avengers",
+            "phase": 1,
+            "release": "2012-05-03",
+            "imdb": 6.6
+        },
+        {
+            "title": "Iron Man 3",
+            "phase": 2,
+            "release": "2013-05-02",
+            "imdb": 7.1
+        },
+        {
+            "title": "Thor: The Dark World",
+            "phase": 2,
+            "release": "2013-11-08",
+            "imdb": 6.8
+        },
+        {
+            "title": "Captain America: The Winter Soldier",
+            "phase": 2,
+            "release": "2014-04-03",
+            "imdb": 7.7
+        },
+        {
+            "title": "Guardians of the Galaxy",
+            "phase": 2,
+            "release": "2014-08-14",
+            "imdb": 8.0
+        },
+        {
+            "title": "Avengers: Age of Ultron",
+            "phase": 2,
+            "release": "2015-04-30",
+            "imdb": 7.3
+        },
+        {
+            "title": "Ant-Man",
+            "phase": 2,
+            "release": "2015-07-30",
+            "imdb": 7.3
+        },
+        {
+            "title": "Captain America: Civil War",
+            "phase": 3,
+            "release": "2008-06-13",
+            "imdb": 7.8
+        },
+        {
+            "title": "Doctor Strange",
+            "phase": 3,
+            "release": "2016-11-03",
+            "imdb": 7.5
+        },
+        {
+            "title": "Guardians of the Galaxy Vol. 2",
+            "phase": 3,
+            "release": "2017-05-05",
+            "imdb": 7.6
+        },
+        {
+            "title": "Spider-Man: Homecoming",
+            "phase": 3,
+            "release": "2017-07-07",
+            "imdb": 7.4
+        },
+        {
+            "title": "Thor: Ragnarok",
+            "phase": 3,
+            "release": "2017-11-03",
+            "imdb": 7.9
+        },
+        {
+            "title": "Black Panther",
+            "phase": 3,
+            "release": "2018-02-16",
+            "imdb": 7.3
+        },
+        {
+            "title": "Avengers: Infinity War",
+            "phase": 3,
+            "release": "2018-04-26",
+            "imdb": 8.4
+        },
+        {
+            "title": "Ant-Man and the Wasp",
+            "phase": 3,
+            "release": "2018-06-25",
+            "imdb": 7.0
+        },
+        {
+            "title": "Captain Marvel",
+            "phase": 3,
+            "release": "2019-03-07",
+            "imdb": 6.8
+        },
+        {
+            "title": "Avengers: Endgame",
+            "phase": 3,
+            "release": "2019-04-26",
+            "imdb": 8.4
+        },
+        {
+            "title": "Spider-Man: Far From Home",
+            "phase": 3,
+            "release": "2019-07-02",
+            "imdb": 7.4
+        },
+        {
+            "title": "WandaVision",
+            "phase": 4,
+            "release": "2021-01-15",
+            "imdb": 8.0
+        },
+        {
+            "title": "The Falcon and the Winter Soldier",
+            "phase": 4,
+            "release": "2021-03-19",
+            "imdb": 7.3
+        },
+        {
+            "title": "Loki Season 1",
+            "phase": 4,
+            "release": "2021-06-09",
+            "imdb": 8.3
+        },
+        {
+            "title": "Black Widow",
+            "phase": 4,
+            "release": "2021-07-08",
+            "imdb": 6.7
+        },
+        {
+            "title": "What If...?",
+            "phase": 4,
+            "release": "2021-08-11",
+            "imdb": 7.5
+        },
+        {
+            "title": "Shang-Chi and the Legend of the Ten Rings",
+            "phase": 4,
+            "release": "2021-09-03",
+            "imdb": 7.6
+        },
+        {
+            "title": "Eternals",
+            "phase": 4,
+            "release": "2021-11-04",
+            "imdb": 6.8
+        },
+        {
+            "title": "Hawkeye",
+            "phase": 4,
+            "release": "2021-11-24",
+            "imdb": 8.1
+        }
+    ] 
+}
