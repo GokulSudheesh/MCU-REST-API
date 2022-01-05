@@ -185,6 +185,12 @@
             "phase": 4,
             "release": "2021-11-24",
             "imdb": 8.1
+        },
+        {
+            "title": "Spider-Man: No Way Home",
+            "phase": 4,
+            "release": "2021-12-16",
+            "imdb": 8.8
         }
     ] 
 }

@@ -174,6 +174,21 @@
             "quote": "Dude, don't call us plucky. We don't know what it means.",
             "character": "Star Lord",
             "movie": "Avengers: Endgame"
+        },
+        {
+            "quote": "I love you guys.",
+            "character": "Peter Parker",
+            "movie": "Spider-Man: No Way Home"
+        },
+        {
+            "quote": "You know, I'm something of a scientist myself.",
+            "character": "Normal Osborn",
+            "movie": "Spider-Man: No Way Home"
+        },
+        {
+            "quote": "With great power comes great responsibility.",
+            "character": "Aunt May",
+            "movie": "Spider-Man: No Way Home"
         }
     ]
 }
