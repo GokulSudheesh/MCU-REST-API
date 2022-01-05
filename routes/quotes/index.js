@@ -12,12 +12,7 @@ const checkMovieId = async id => {
 router.route("/")
 .get(async (req, res, next) => {
     try {
-        let quotes = await Quote.find(req.query).lean().exec();
-        quotes = await Promise.all(quotes.map(async quote => {
-            const movie = await Movie.findOne({ _id: quote.movie }).exec();
-            quote.movie = movie.title;
-            return quote;
-        }));
+        const quotes = await Quote.find(req.query).populate("movie");
         res.status(200).json({ quotes });
     } catch(err) {
         next(err);
@@ -87,10 +82,7 @@ router.route("/random")
     try {
         const count = await Quote.countDocuments(req.query).exec();
         const random = Math.floor(Math.random() * count);
-        let randomQuote = await Quote.findOne(req.query).skip(random).lean().exec();
-        // Find the movie title
-        const movie = await Movie.findOne({ _id: randomQuote.movie }).exec();
-        randomQuote.movie = movie.title;
+        const randomQuote = await Quote.findOne(req.query).populate("movie").skip(random).exec();
         res.status(200).json(randomQuote);
     } catch(err) {
         next(err);
