@@ -1,92 +1,50 @@
 const express = require("express");
 const router = express.Router();
 const Quote = require("./model");
-const Movie = require("../movies/model");
-
-const checkMovieId = async id => {
-    // Check if movie id exists
-    if (id) return await Movie.exists({ _id: id });
-    return true;
-} 
+const catchAsync = require("../../utils/catchAsync");
+const { quotePostValidate, quoteDeleteValidate,
+    quotePutValidate, quotePatchValidate } = require("../../middleware/validator");
 
 router.route("/")
 .get(async (req, res, next) => {
-    try {
-        const quotes = await Quote.find(req.query).populate("movie");
-        res.status(200).json({ quotes });
-    } catch(err) {
-        next(err);
-    }
+    const quotes = await Quote.find(req.query).populate("movie");
+    res.status(200).json({ quotes });
 })
-.post(async (req, res, next) => {
-    try {
-        const { movie } = req.body;
-        if (!await checkMovieId(movie)) return res.status(404).json({ msg: "Invalid movie id." });
-        // Save the new Quote
-        const newQuote = new Quote({...req.body});
-        let errors = newQuote.validateSync();
-        if (errors) return res.status(404).json({ msg: "Invalid data." });
-        newQuote.save();
-        res.status(200).json({ msg: "Success!" });
-    } catch(err) {
-        next(err);
-    }
-})
-.delete(async (req, res, next) => {
+.post(quotePostValidate, catchAsync(async (req, res, next) => {
+    const newQuote = new Quote(req.body);
+    newQuote.save();
+    res.status(200).json({ msg: "Success!" });
+}))
+.delete(quoteDeleteValidate, async (req, res, next) => {
     const { id } = req.query;
-    if (!id) return res.status(404).json({msg: "Invalid query parameter."});
-    const result = await Quote.deleteOne({ _id: id });
-    if (!result.deletedCount) return res.status(404).json({ msg: "Invalid id." });
+    await Quote.deleteOne({ _id: id });
     res.status(200).json({ msg: "Success!" });
 })
-.put(async (req, res, next) => {
-    try {
-        const { id } = req.query;
-        if (!id) return res.status(404).json({msg: "Invalid query parameter."});
-        const { quote, character, movie } = req.body;
-        if (!quote || !character || !movie) return res.status(404).json({msg: "Invalid data."});
-        if (!await checkMovieId(movie)) return res.status(404).json({ msg: "Invalid movie id." });
-        const result = await Quote.findOneAndUpdate(
-            { _id: req.query.id },
-            { quote, character, movie },
-            { overwrite: true }
-        );
-        if (!result) return res.status(404).json({ msg: "Invalid id." });
-        res.status(200).json({ msg: "Success!" });
-    } catch(err) {
-        // next(err);
-        res.status(404).json({ msg: "Invalid data." });
-    }
-})
-.patch(async (req, res, next) => {
-    try {
-        const { id } = req.query;
-        const { movie } = req.body;
-        if (!id) return res.status(404).json({msg: "Invalid query parameter."});
-        if (!await checkMovieId(movie)) return res.status(404).json({ msg: "Invalid movie id." });
-        const result = await Quote.findOneAndUpdate(
-            { _id: req.query.id },
-            { $set: req.body }
-        );
-        if (!result) return res.status(404).json({ msg: "Invalid id." });
-        res.status(200).json({ msg: "Success!" });
-    } catch(err) {
-        // next(err);
-        res.status(404).json({ msg: "Invalid data." });
-    }
-});
+.put(quotePutValidate, catchAsync(async (req, res, next) => {
+    const { id } = req.query;
+    await Quote.findOneAndUpdate(
+        { _id: id },
+        req.body,
+        { overwrite: true }
+    );
+    res.status(200).json({ msg: "Success!" });
+}))
+.patch(quotePatchValidate, catchAsync(async (req, res, next) => {
+    const { id } = req.query;
+    await Quote.findOneAndUpdate(
+        { _id: id },
+        { $set: req.body }
+    );
+    res.status(200).json({ msg: "Success!" });
+}));
 
 // Get a random quote from the collection
 router.route("/random")
-.get(async (req, res, next) => {
-    try {
-        const count = await Quote.countDocuments(req.query).exec();
-        const random = Math.floor(Math.random() * count);
-        const randomQuote = await Quote.findOne(req.query).populate("movie").skip(random).exec();
-        res.status(200).json(randomQuote);
-    } catch(err) {
-        next(err);
-    }
-});
+.get(catchAsync(async (req, res, next) => {
+    const count = await Quote.countDocuments(req.query).exec();
+    const random = Math.floor(Math.random() * count);
+    const randomQuote = await Quote.findOne(req.query).populate("movie").skip(random).exec();
+    res.status(200).json(randomQuote);
+}));
 
 module.exports = router;

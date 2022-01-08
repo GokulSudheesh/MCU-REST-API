@@ -1,6 +1,21 @@
 const { body, query, validationResult } = require("express-validator");
 const ExpressError = require("../utils/ExpressError");
 const Movie = require("../routes/movies/model");
+const Quote = require("../routes/quotes/model");
+
+const checkMovieId = async value => {
+    const movie = await Movie.exists({ _id: value });
+    if (!movie) {
+      throw new Error("There is no movie with that id");
+    }
+}
+
+const checkQuoteId = async value => {
+    const quote = await Quote.exists({ _id: value });
+    if (!quote) {
+      throw new Error("There is no quote with that id");
+    }
+}
 
 const moviePostRules = [
     // Check movie title
@@ -21,14 +36,9 @@ const moviePostRules = [
 const movieIdExists = [
     // Check the id
     query("id").notEmpty().withMessage("Provide id as the query parameter")
-    .isMongoId().withMessage("Provide a valid mongoDB id")
+    .isMongoId().withMessage("Provide a valid mongoDB id").bail()
     // Check if that movie exists
-    .custom(async value => {
-        const movie = await Movie.exists({ _id: value });
-        if (!movie) {
-          throw new Error("There is no movie with that id");
-        }
-    })
+    .custom(checkMovieId)
 ];
 
 const moviePatchRules = [
@@ -50,6 +60,45 @@ const moviePatchRules = [
     .isFloat().withMessage("Imdb rating must be a float")
 ];
 
+const quotePostRules = [
+    // Check quote
+    body("quote").isString().withMessage("Quote must be a string")
+    .trim().notEmpty().withMessage("Missing quote"),
+    // Check character
+    body("character").isString().withMessage("Character must be a string")
+    .trim().notEmpty().withMessage("Missing character"),
+    // Check the movie id
+    body("movie").notEmpty().withMessage("Provide movie's id as the query parameter")
+    .isMongoId().withMessage("Provide a valid mongoDB id").bail()
+    // Check if that movie exists
+    .custom(checkMovieId)
+];
+
+const quoteIdExists = [
+    // Check the id
+    query("id").notEmpty().withMessage("Provide id as the query parameter")
+    .isMongoId().withMessage("Provide a valid mongoDB id").bail()
+    // Check if that movie exists
+    .custom(checkQuoteId)
+];
+
+const quotePatchRules = [
+    // Check quote
+    body("quote").optional()
+    .isString().withMessage("Quote must be a string")
+    .trim().notEmpty().withMessage("Missing quote"),
+    // Check character
+    body("character").optional()
+    .isString().withMessage("Character must be a string")
+    .trim().notEmpty().withMessage("Missing character"),
+    // Check the movie id
+    body("movie").optional()
+    .notEmpty().withMessage("Provide movie's id as the query parameter")
+    .isMongoId().withMessage("Provide a valid mongoDB id").bail()
+    // Check if that movie exists
+    .custom(checkMovieId)
+];
+
 const keywordSearchRules = [
     // Check query string
     query("q").notEmpty().withMessage("Missing query."),
@@ -67,5 +116,9 @@ module.exports = {
     movieDeleteValidate: [...movieIdExists, validate],
     moviePutValidate: [...movieIdExists, ...moviePostRules, validate],
     moviePatchValidate: [...movieIdExists, ...moviePatchRules, validate],
+    quotePostValidate: [...quotePostRules, validate],
+    quoteDeleteValidate: [...quoteIdExists, validate],
+    quotePutValidate: [...quoteIdExists, ...quotePostRules, validate],
+    quotePatchValidate: [...quoteIdExists, ...quotePatchRules, validate],
     keywordValidate: [...keywordSearchRules, validate]
 };
