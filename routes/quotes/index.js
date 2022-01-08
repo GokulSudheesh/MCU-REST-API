@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Quote = require("./model");
 const catchAsync = require("../../utils/catchAsync");
+const checkJwt = require("../../utils/jwt");
 const { quotePostValidate, quoteDeleteValidate,
     quotePutValidate, quotePatchValidate } = require("../../middleware/validator");
 
@@ -10,17 +11,17 @@ router.route("/")
     const quotes = await Quote.find(req.query).populate("movie");
     res.status(200).json({ quotes });
 })
-.post(quotePostValidate, catchAsync(async (req, res, next) => {
+.post(checkJwt, quotePostValidate, catchAsync(async (req, res, next) => {
     const newQuote = new Quote(req.body);
     newQuote.save();
     res.status(200).json({ msg: "Success!" });
 }))
-.delete(quoteDeleteValidate, async (req, res, next) => {
+.delete(checkJwt, quoteDeleteValidate, async (req, res, next) => {
     const { id } = req.query;
     await Quote.deleteOne({ _id: id });
     res.status(200).json({ msg: "Success!" });
 })
-.put(quotePutValidate, catchAsync(async (req, res, next) => {
+.put(checkJwt, quotePutValidate, catchAsync(async (req, res, next) => {
     const { id } = req.query;
     await Quote.findOneAndUpdate(
         { _id: id },
@@ -29,7 +30,7 @@ router.route("/")
     );
     res.status(200).json({ msg: "Success!" });
 }))
-.patch(quotePatchValidate, catchAsync(async (req, res, next) => {
+.patch(checkJwt, quotePatchValidate, catchAsync(async (req, res, next) => {
     const { id } = req.query;
     await Quote.findOneAndUpdate(
         { _id: id },

@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Movie = require("./model");
+const checkJwt = require("../../utils/jwt");
 const catchAsync = require("../../utils/catchAsync");
 const { moviePostValidate, movieDeleteValidate, keywordValidate,
     moviePutValidate, moviePatchValidate } = require("../../middleware/validator");
@@ -10,17 +11,17 @@ router.route("/")
     const movies = await Movie.find(req.query).exec();
     res.status(200).json({ movies });
 })
-.post(moviePostValidate, catchAsync(async (req, res, next) => {
+.post(checkJwt, moviePostValidate, catchAsync(async (req, res, next) => {
     const newMovie = new Movie(req.body);
     newMovie.save();
     res.status(200).json({ msg: "Success!" });
 }))
-.delete(movieDeleteValidate, async (req, res, next) => {
+.delete(checkJwt, movieDeleteValidate, async (req, res, next) => {
     const { id } = req.query;
     await Movie.deleteOne({ _id: id });
     res.status(200).json({ msg: "Success!" });
 })
-.put(moviePutValidate, catchAsync(async (req, res, next) => {
+.put(checkJwt, moviePutValidate, catchAsync(async (req, res, next) => {
     const { id } = req.query;
     await Movie.findOneAndUpdate(
         { _id: id },
@@ -29,7 +30,7 @@ router.route("/")
     );
     res.status(200).json({ msg: "Success!" });
 }))
-.patch(moviePatchValidate, catchAsync(async (req, res, next) => {
+.patch(checkJwt, moviePatchValidate, catchAsync(async (req, res, next) => {
     const { id } = req.query;
     await Movie.findOneAndUpdate(
         { _id: id },
