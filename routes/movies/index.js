@@ -22,7 +22,6 @@ router.route("/")
 })
 .put(moviePutValidate, catchAsync(async (req, res, next) => {
     const { id } = req.query;
-    console.log(req.body);
     await Movie.findOneAndUpdate(
         { _id: id },
         req.body,
