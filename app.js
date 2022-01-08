@@ -2,6 +2,7 @@ require("./config/database");
 const express = require("express");
 const mongoSanitize = require('express-mongo-sanitize');
 const routes = require("./routes");
+const ExpressError = require("./utils/ExpressError");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -14,10 +15,16 @@ app.use(mongoSanitize({
 
 app.use("/", routes);
 
+app.all("*", (req, res, next) => {
+    next(new ExpressError("Route does not exist", 404));
+})
+
 // Error handling middle ware
 app.use((err, req, res, next) => {
-    // console.log(err);
-    res.status(500).json({ msg: "Internal error. Something went wrong." });
+    console.log(err);
+    const { statusCode = 500 } = err;
+    if (!err.message) err.message = 'Internal error. Something went wrong.'
+    res.status(statusCode).json({ msg: err.message });
 });
 
 app.listen(port, () => {
