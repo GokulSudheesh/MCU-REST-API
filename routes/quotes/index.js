@@ -6,20 +6,20 @@ const { quotePostValidate, quoteDeleteValidate,
     quotePutValidate, quotePatchValidate } = require("../../middleware/validator");
 
 router.route("/")
-.get(async (req, res, next) => {
+.get(catchAsync(async (req, res, next) => {
     const quotes = await Quote.find(req.query).populate("movie");
     res.status(200).json({ quotes });
-})
+}))
 .post(quotePostValidate, catchAsync(async (req, res, next) => {
     const newQuote = new Quote(req.body);
     newQuote.save();
     res.status(200).json({ msg: "Success!" });
 }))
-.delete(quoteDeleteValidate, async (req, res, next) => {
+.delete(quoteDeleteValidate, catchAsync(async (req, res, next) => {
     const { id } = req.query;
-    await Quote.deleteOne({ _id: id });
+    await Quote.findOneAndDelete({ _id: id });
     res.status(200).json({ msg: "Success!" });
-})
+}))
 .put(quotePutValidate, catchAsync(async (req, res, next) => {
     const { id } = req.query;
     await Quote.findOneAndUpdate(
