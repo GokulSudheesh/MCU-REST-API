@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
+const Quote = require("../quotes/model");
 
 const movieSchema = new Schema(
     {
@@ -9,4 +10,12 @@ const movieSchema = new Schema(
         imdb: { type: Number }
     }
 );
+
+// Delete all quotes associated with a movie, when a movie is
+movieSchema.post("findOneAndDelete", async function (doc) {
+    if (doc) {
+        await Quote.deleteMany({ movie: doc._id });
+    }
+});
+
 module.exports = mongoose.model("Movie", movieSchema);
